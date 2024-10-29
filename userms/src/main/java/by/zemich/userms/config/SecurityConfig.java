@@ -24,7 +24,7 @@ import java.util.Map;
 
 @Configuration
 @EnableWebSecurity
-@Profile("prod")
+@Profile("test")
 public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
