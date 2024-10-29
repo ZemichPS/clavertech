@@ -18,7 +18,8 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping
-    public ResponseEntity<String> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<String> register(
+            @RequestBody RegisterRequest request) {
         User registered = authService.register(request);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -29,14 +30,10 @@ public class AuthController {
     }
 
     @GetMapping
-    public ResponseEntity<String> authenticate(@RequestParam String login,
-                                               @RequestParam String password
+    public ResponseEntity<String> login(@RequestParam String login,
+                                        @RequestParam String password
     ) {
-        AuthLoginPasswordRequest request = AuthLoginPasswordRequest.builder()
-                .login(login)
-                .password(password)
-                .build();
-        String jwt = authService.authenticate(request);
+        String jwt = authService.authenticate(login, password);
         return ResponseEntity.ok(jwt);
     }
 

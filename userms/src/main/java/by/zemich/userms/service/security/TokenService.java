@@ -1,4 +1,4 @@
-package by.zemich.userms.service;
+package by.zemich.userms.service.security;
 
 import by.zemich.userms.config.SecureProperties;
 import by.zemich.userms.dao.entity.User;
@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor

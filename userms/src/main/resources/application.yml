@@ -2,7 +2,7 @@ spring:
   application:
     name: user-ms
   profiles:
-    active: test
+    active: prod
 
 eureka:
   client:

@@ -24,7 +24,7 @@ import java.util.Map;
 
 @Configuration
 @EnableWebSecurity
-@Profile("test")
+@Profile("prod")
 public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -32,7 +32,6 @@ public class SecurityConfig {
                 authorizationManagerRequestMatcherRegistry -> authorizationManagerRequestMatcherRegistry.anyRequest().permitAll()
         ).build();
     }
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -50,8 +49,5 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationProvider authenticationProvider) {
         return new ProviderManager(authenticationProvider);
     }
-
-
-
 
 }

@@ -4,6 +4,7 @@ import by.zemich.userms.controller.request.AuthLoginPasswordRequest;
 import by.zemich.userms.controller.request.RegisterRequest;
 import by.zemich.userms.dao.entity.Role;
 import by.zemich.userms.dao.entity.User;
+import by.zemich.userms.service.security.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -23,15 +24,16 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
 
-    public String authenticate(AuthLoginPasswordRequest loginPasswordRequest) {
+    public String authenticate(String login, String password) {
         Authentication authentication = new UsernamePasswordAuthenticationToken(
-                loginPasswordRequest.getLogin(), loginPasswordRequest.getPassword()
+                login, password
         );
+
         Authentication authenticationResult = authenticationManager.authenticate(authentication);
         if (!authenticationResult.isAuthenticated()) {
             throw new BadCredentialsException("Bad credentials");
         }
-        return getToken(loginPasswordRequest.getLogin());
+        return getToken(login);
     }
 
     public User register(RegisterRequest registerRequest) {

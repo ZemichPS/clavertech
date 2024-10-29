@@ -9,6 +9,7 @@ import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.authorization.AuthorizationManagers;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.core.Authentication;
 
 import java.security.Provider;
@@ -18,15 +19,23 @@ import java.security.Provider;
 @Profile(value = "prod")
 public class SecurityConfig {
 
-
     AuthenticationManager authenticationManager(AuthenticationProvider authenticationProvider){
-        return new ProviderManager()
+        return new ProviderManager();
     }
 
     @Bean
     AuthenticationProvider authenticationProvider(){
-        return new DaoAuthenticationProvider();
+        return new JwtAuthenticationProvider();
     }
+
+
+
+
+
+
+
+
+
 
 
 }
