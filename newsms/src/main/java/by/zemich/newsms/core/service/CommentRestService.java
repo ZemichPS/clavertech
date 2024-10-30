@@ -1,6 +1,7 @@
 package by.zemich.newsms.core.service;
 
 import by.zemich.newsms.api.controller.dto.request.CommentRequest;
+import by.zemich.newsms.api.dao.CommentRepository;
 import by.zemich.newsms.core.domain.Comment;
 import by.zemich.newsms.core.mapper.CommentMapper;
 import jakarta.persistence.EntityNotFoundException;
@@ -14,32 +15,33 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CommentRestService {
 
-    private final CommentCrudService commentCrudService;
+    private final CommentRepository commentRepository;
+    private final CommentMapper commentMapper;
 
     public Comment save(CommentRequest commentRequest) {
-        Comment newComment = CommentMapper.INSTANCE.map(commentRequest);
-        return commentCrudService.save(newComment);
+        Comment newComment = commentMapper.mapToEntity(commentRequest);
+        return commentRepository.save(newComment);
     }
 
     public Comment update(UUID id, CommentRequest commentRequest) {
-        return commentCrudService.findById(id)
-                .map(comment -> CommentMapper.INSTANCE.map(comment, commentRequest))
-                .map(commentCrudService::save)
+        return commentRepository.findById(id)
+                .map(comment -> commentMapper.mapToEntity(comment, commentRequest))
+                .map(commentRepository::save)
                 .orElseThrow(() -> new EntityNotFoundException(id.toString()));
     }
 
     public Comment findById(UUID id) {
-        return commentCrudService.findById(id).orElseThrow(() -> new EntityNotFoundException(id.toString()));
+        return commentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(id.toString()));
     }
 
     public void delete(UUID id) {
-        commentCrudService.delete(id);
+        commentRepository.deleteById(id);
     }
 
     public Comment partialUpdateUpdate(UUID id, Map<String, Object> updates) {
-        return commentCrudService.findById(id)
-                .map(comment -> CommentMapper.INSTANCE.map(comment, updates))
-                .map(commentCrudService::save)
+        return commentRepository.findById(id)
+                .map(comment -> commentMapper.mapToEntity(comment, updates))
+                .map(commentRepository::save)
                 .orElseThrow(() -> new EntityNotFoundException(id.toString()));
     }
 }

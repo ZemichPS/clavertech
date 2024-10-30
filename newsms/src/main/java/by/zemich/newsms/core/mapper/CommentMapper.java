@@ -7,13 +7,12 @@ import org.mapstruct.factory.Mappers;
 
 import java.util.Map;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface CommentMapper {
-    CommentMapper INSTANCE = Mappers.getMapper(CommentMapper.class);
 
-    Comment map(CommentRequest newCommentRequest);
-    Comment map(Comment newComment, CommentRequest newCommentRequest);
-    Comment map(Comment newComment, Map<String, Object> updates);
+    Comment mapToEntity(CommentRequest newCommentRequest);
+    Comment mapToEntity(Comment newComment, CommentRequest newCommentRequest);
+    Comment mapToEntity(Comment newComment, Map<String, Object> updates);
 
 
 }
