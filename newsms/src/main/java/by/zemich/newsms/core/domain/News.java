@@ -19,23 +19,36 @@ public class News {
     @UuidGenerator(style = UuidGenerator.Style.TIME)
     @Setter(AccessLevel.NONE)
     private UUID id;
+    private Author author;
+
+    @OneToMany(
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            mappedBy = "news"
+    )
+
+    private List<Comment> comments = new ArrayList<>();
     private LocalDateTime time;
     private String title;
     private String text;
 
-    @Embedded
-    private Author author;
-
-    @Setter(AccessLevel.NONE)
-    @OneToMany(
-            fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    private List<Comment> comments = new ArrayList<>();
-
     public boolean addComment(Comment comment) {
-        return comments.add(comment);
+        if (!comments.contains(comment)) {
+            comment.setNews(this);
+            return comments.add(comment);
+        }
+        return false;
     }
+
+    public void removeComment(Comment comment) {
+        comment.setNews(null);
+        comments.remove(comment);
+    }
+
+    public void removeAllComments() {
+        this.comments.forEach(comment -> comment.setNews(null));
+    }
+
 
 }

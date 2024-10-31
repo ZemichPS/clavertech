@@ -26,5 +26,9 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
 
+cache:
+  algorithm: LRU
+  size: 350
+
 server:
   port: 0

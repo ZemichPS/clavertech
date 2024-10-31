@@ -1,18 +1,14 @@
 package by.zemich.newsms.api.config.security;
 
 import by.zemich.newsms.api.config.properties.JWTProperty;
-import by.zemich.newsms.api.controller.filter.JWTFilter;
+import by.zemich.newsms.api.config.security.filter.JWTFilter;
 import by.zemich.newsms.core.service.JWTHandler;
 import by.zemich.newsms.core.service.UserDetailsServiceImpl;
 import by.zemich.newsms.core.service.UserFeignClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 @Configuration

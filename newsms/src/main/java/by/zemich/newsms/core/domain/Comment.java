@@ -1,11 +1,8 @@
 package by.zemich.newsms.core.domain;
 
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.time.LocalDateTime;
@@ -17,10 +14,13 @@ public class Comment {
     @Id
     @UuidGenerator(style = UuidGenerator.Style.TIME)
     private UUID id;
-    private LocalDateTime date;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "news_id", referencedColumnName = "id")
+    private News news;
+
+    @CreationTimestamp()
+    private LocalDateTime createdAt;
     private String text;
     private String username;
-    @Embedded
-    private NewsId newsId;
-
 }

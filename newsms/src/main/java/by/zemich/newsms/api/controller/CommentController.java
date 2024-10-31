@@ -20,7 +20,7 @@ public class CommentController {
     private final CommentRestService commentRestService;
 
     @PostMapping
-    public ResponseEntity<URI> add(@RequestBody CommentRequest newCommentRequest) {
+    public ResponseEntity<URI> create(@RequestBody CommentRequest newCommentRequest) {
         Comment savedComment = commentRestService.save(newCommentRequest);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -31,19 +31,19 @@ public class CommentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Comment> get(@PathVariable UUID id) {
+    public ResponseEntity<Comment> getById(@PathVariable UUID id) {
         Comment comment = commentRestService.findById(id);
         return ResponseEntity.ok(comment);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Comment> update(@PathVariable UUID id, @RequestBody CommentRequest newCommentRequest) {
+    public ResponseEntity<Comment> updateById(@PathVariable UUID id, @RequestBody CommentRequest newCommentRequest) {
         Comment updatedComment = commentRestService.update(id, newCommentRequest);
         return ResponseEntity.ok(updatedComment);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Comment> partialUpdate(@PathVariable UUID id, @RequestBody Map<String, Object> updates) {
+    public ResponseEntity<Comment> patchById(@PathVariable UUID id, @RequestBody Map<String, Object> updates) {
         Comment updatedComment = commentRestService.partialUpdateUpdate(id, updates);
         return ResponseEntity.ok(updatedComment);
     }
