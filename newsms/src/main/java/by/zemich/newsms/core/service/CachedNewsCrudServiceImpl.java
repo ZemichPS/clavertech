@@ -1,9 +1,8 @@
 package by.zemich.newsms.core.service;
 
-import by.zemich.newsms.api.dao.CommentRepository;
-import by.zemich.newsms.core.domain.Comment;
-import by.zemich.newsms.core.service.api.CommentCrudService;
-import by.zemich.newsms.core.service.api.CrudService;
+import by.zemich.newsms.api.dao.NewsRepository;
+import by.zemich.newsms.core.domain.News;
+import by.zemich.newsms.core.service.api.NewsCrudService;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -17,33 +16,33 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-@CacheConfig(cacheNames = "comments")
+@CacheConfig(cacheNames = "news")
 @AllArgsConstructor
-public class CommentCrudServiceImpl implements CommentCrudService {
+public class CachedNewsCrudServiceImpl implements NewsCrudService {
 
-    private final CommentRepository commentRepository;
+    private final NewsRepository newsRepository;
 
     @Override
     @CachePut
-    public Comment save(Comment comment) {
-        return commentRepository.save(comment);
+    public News save(News news) {
+        return newsRepository.save(news);
     }
 
     @Override
     @Cacheable(key = "#id")
-    public Optional<Comment> findById(UUID id) {
-        return commentRepository.findById(id);
+    public Optional<News> findById(UUID id) {
+        return newsRepository.findById(id);
     }
 
     @Override
     @CacheEvict
     public void deleteById(UUID id) {
-        commentRepository.deleteById(id);
+        newsRepository.deleteById(id);
     }
 
     @Override
     @Cacheable(key = "#pageable")
-    public Page<Comment> findAll(Pageable pageable) {
-        return commentRepository.findAll(pageable);
+    public Page<News> findAll(Pageable pageable) {
+        return newsRepository.findAll(pageable);
     }
 }

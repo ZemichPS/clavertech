@@ -14,8 +14,8 @@ import org.springframework.context.annotation.Profile;
 @EnableCaching
 @Configuration
 @RequiredArgsConstructor
-
 @Profile(value = "test")
+@ConditionalOnProperty(name = "cache.enabled", havingValue = "true")
 public class CacheConfig {
 
     @Bean

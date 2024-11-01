@@ -7,5 +7,5 @@ import java.util.UUID;
 
 public interface NewsRepository extends JpaRepository<News, UUID> {
     @Override
-    void deleteById(UUID uuid);
+    void deleteById(UUID id);
 }

@@ -10,4 +10,7 @@ import java.util.UUID;
 public interface CommentCrudService extends CrudService<Comment, UUID> {
 
 
+    Page<Comment> findAllByNewsId(UUID id, Pageable pageable);
+
+    Optional<Comment> findByIdAndNewsId(UUID commentId, UUID newsId);
 }

@@ -8,5 +8,5 @@ import java.util.UUID;
 @Embeddable
 @Data
 public class Author {
-    private UUID id;
+    private UUID authorId;
 }

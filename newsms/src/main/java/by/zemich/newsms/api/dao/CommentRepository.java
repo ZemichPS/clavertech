@@ -14,6 +14,6 @@ public interface CommentRepository extends JpaRepository<Comment, UUID>, PagingA
     @Override
     void deleteById(UUID id);
 
-    Page<Comment> findAllByNewsId(UUID uuid, Pageable pageable);
+    Page<Comment> findAllByNewsId(UUID id, Pageable pageable);
     Optional<Comment> findByIdAndNewsId(UUID id, UUID newsId);
 }

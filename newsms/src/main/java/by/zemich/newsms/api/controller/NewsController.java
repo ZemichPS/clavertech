@@ -67,25 +67,14 @@ public class NewsController {
         return ResponseEntity.ok(response);
     }
 
-
-//    @GetMapping("/{news_id}/comments/{comment_id}")
-//    public ResponseEntity<CommentFullResponse> getCommentByAuthorId(
-//            @PathVariable(name = "news_id") UUID newsId,
-//            @PathVariable(name = "comment_id") UUID commentId
-//    ) {
-//        CommentFullResponse response = newsRestService.getCommentByNewsIdAndCommentId(newsId, commentId);
-//        return ResponseEntity.ok(response);
-//    }
-
-
-    @GetMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<NewsResponse> updateById(@PathVariable UUID id, NewsRequest newsRequest) {
         NewsResponse newsResponse = newsRestService.update(id, newsRequest);
         return ResponseEntity.ok(newsResponse);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<NewsResponse> patchById(@PathVariable UUID id, NewsRequest newsRequest) {
+    public ResponseEntity<NewsResponse> patchById(@PathVariable UUID id, @RequestBody NewsRequest newsRequest) {
         NewsResponse newsResponse = newsRestService.patchById(id, newsRequest);
         return ResponseEntity.ok(newsResponse);
     }
@@ -95,8 +84,4 @@ public class NewsController {
         newsRestService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
-
-
-
-
 }

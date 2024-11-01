@@ -11,6 +11,8 @@ import by.zemich.newsms.core.domain.Comment;
 import by.zemich.newsms.core.domain.News;
 import by.zemich.newsms.core.mapper.CommentMapper;
 import by.zemich.newsms.core.mapper.NewsMapper;
+import by.zemich.newsms.core.service.api.CommentCrudService;
+import by.zemich.newsms.core.service.api.NewsCrudService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -22,14 +24,14 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class NewsRestService {
-    private final NewsRepository newsRepository;
-    private final NewsMapper newsMapper;
+    private final NewsCrudService newsCrudService;
+    private final CommentCrudService commentCrudService;
     private final CommentMapper commentMapper;
-    private final CommentRepository commentRepository;
+    private final NewsMapper newsMapper;
 
     public News save(NewsRequest newsRequest) {
         News news = newsMapper.mapToEntity(newsRequest);
-        return newsRepository.save(news);
+        return newsCrudService.save(news);
     }
 
     public NewsResponse findById(UUID id) {
@@ -38,7 +40,7 @@ public class NewsRestService {
     }
 
     public void deleteById(UUID id) {
-        commentRepository.deleteById(id);
+        commentCrudService.deleteById(id);
     }
 
     public NewsResponse patchById(UUID id, NewsRequest newsRequest) {
@@ -59,7 +61,7 @@ public class NewsRestService {
                 sortBy
         );
 
-        Page<Comment> allCommentsPage = commentRepository.findAllByNewsId(pageRequest.getId(), pageable);
+        Page<Comment> allCommentsPage = commentCrudService.findAllByNewsId(pageRequest.getId(), pageable);
         List<ShortCommentResponse> responses = allCommentsPage.get()
                 .map(commentMapper::mapToDTO)
                 .toList();
@@ -68,7 +70,7 @@ public class NewsRestService {
 
 
     public CommentFullResponse getCommentByNewsIdAndCommentId(UUID newsId, UUID commentId) {
-        return commentRepository.findByIdAndNewsId(commentId, newsId)
+        return commentCrudService.findByIdAndNewsId(commentId, newsId)
                 .map(commentMapper::mapToFullResponse)
                 .orElseThrow();
     }

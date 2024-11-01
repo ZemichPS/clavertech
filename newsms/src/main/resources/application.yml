@@ -27,6 +27,7 @@ eureka:
     fetch-registry: true
 
 cache:
+  enabled: true
   algorithm: LRU
   size: 350
 
