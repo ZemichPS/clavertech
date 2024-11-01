@@ -1,7 +1,7 @@
-package by.zemich.newsms.api.config.security;
+package by.zemich.newsms.config.security;
 
-import by.zemich.newsms.api.config.properties.JWTProperty;
-import by.zemich.newsms.api.config.security.filter.JWTFilter;
+import by.zemich.newsms.config.properties.JWTProperty;
+import by.zemich.newsms.config.security.filter.JWTFilter;
 import by.zemich.newsms.core.service.JWTHandler;
 import by.zemich.newsms.core.service.UserDetailsServiceImpl;
 import by.zemich.newsms.core.service.UserFeignClient;

@@ -1,4 +1,4 @@
-package by.zemich.newsms.api.config;
+package by.zemich.newsms.config;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;

@@ -32,3 +32,6 @@ cache:
 
 server:
   port: 0
+
+jwt:
+  secret: dfiogudoifguoidfgiodufgiodufgiodufgiod

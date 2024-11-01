@@ -1,4 +1,4 @@
-package by.zemich.newsms.api.config.properties;
+package by.zemich.newsms.config.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

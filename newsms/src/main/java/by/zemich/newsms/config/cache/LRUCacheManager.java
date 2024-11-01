@@ -1,14 +1,18 @@
-package by.zemich.newsms.api.config.cache;
+package by.zemich.newsms.config.cache;
 
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.Collections;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class LRUCacheManager implements CacheManager {
 
+    private final Map<String, Cache> caches = new ConcurrentHashMap<>();
     private final int maxSize;
+
 
     public LRUCacheManager(int maxSize) {
         this.maxSize = maxSize;
@@ -16,11 +20,11 @@ public class LRUCacheManager implements CacheManager {
 
     @Override
     public Cache getCache(String name) {
-        return null;
+        return caches.computeIfAbsent(name, k -> new LruCacheWrapper<>(new LRUCache(maxSize)));
     }
 
     @Override
     public Collection<String> getCacheNames() {
-        return List.of();
+        return Collections.unmodifiableSet(caches.keySet());
     }
 }

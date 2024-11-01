@@ -1,4 +1,4 @@
-package by.zemich.newsms.api.config.security.filter;
+package by.zemich.newsms.config.security.filter;
 
 import by.zemich.newsms.core.service.JWTHandler;
 import jakarta.servlet.FilterChain;
