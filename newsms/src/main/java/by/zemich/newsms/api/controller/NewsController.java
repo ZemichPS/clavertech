@@ -3,7 +3,7 @@ package by.zemich.newsms.api.controller;
 import by.zemich.newsms.api.controller.dto.request.NewsPageRequest;
 import by.zemich.newsms.api.controller.dto.request.NewsRequest;
 import by.zemich.newsms.api.controller.dto.response.CommentFullResponse;
-import by.zemich.newsms.api.controller.dto.response.NewsResponse;
+import by.zemich.newsms.api.controller.dto.response.NewsFullResponse;
 import by.zemich.newsms.api.controller.dto.response.ShortCommentResponse;
 import by.zemich.newsms.core.domain.News;
 import by.zemich.newsms.core.service.NewsRestService;
@@ -34,18 +34,33 @@ public class NewsController {
         return ResponseEntity.created(location).build();
     }
 
+    @GetMapping
+    public ResponseEntity<PageImpl<NewsFullResponse>> getNews(
+            @RequestParam(name = "page_number", defaultValue = "0") int pageNumber,
+            @RequestParam(name = "page_size", defaultValue = "10") int pageSize,
+            @RequestParam(name = "sort_by", defaultValue = "createdAt") String sortBy
+    ) {
+        NewsPageRequest pageRequest = NewsPageRequest.builder()
+                .pageNumber(pageNumber)
+                .pageSize(pageSize)
+                .sortBy(sortBy)
+                .build();
+        PageImpl<NewsFullResponse> page = newsRestService.getNews(pageRequest);
+        return ResponseEntity.ok(page);
+    }
+
     @GetMapping("/{id}")
-    public ResponseEntity<NewsResponse> getById(@PathVariable UUID id) {
-        NewsResponse newsResponse = newsRestService.findById(id);
-        return ResponseEntity.ok(newsResponse);
+    public ResponseEntity<NewsFullResponse> getById(@PathVariable UUID id) {
+        NewsFullResponse newsFullResponse = newsRestService.findById(id);
+        return ResponseEntity.ok(newsFullResponse);
     }
 
     @GetMapping("/{id}/comments")
-    public ResponseEntity<PageImpl<ShortCommentResponse>> getCommentsByNewsId(
+    public ResponseEntity<PageImpl<ShortCommentResponse>> getNews(
             @PathVariable UUID id,
-            @RequestParam(name = "page_number", defaultValue = "1") int pageNumber,
+            @RequestParam(name = "page_number", defaultValue = "0") int pageNumber,
             @RequestParam(name = "page_size", defaultValue = "10") int pageSize,
-            @RequestParam(name = "sort_by") String sortBy
+            @RequestParam(name = "sort_by", defaultValue = "createdAt") String sortBy
     ) {
 
         NewsPageRequest pageRequest = NewsPageRequest.builder()
@@ -68,15 +83,15 @@ public class NewsController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<NewsResponse> updateById(@PathVariable UUID id, NewsRequest newsRequest) {
-        NewsResponse newsResponse = newsRestService.update(id, newsRequest);
-        return ResponseEntity.ok(newsResponse);
+    public ResponseEntity<NewsFullResponse> updateById(@PathVariable UUID id, @RequestBody NewsRequest newsRequest) {
+        NewsFullResponse newsFullResponse = newsRestService.update(id, newsRequest);
+        return ResponseEntity.ok(newsFullResponse);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<NewsResponse> patchById(@PathVariable UUID id, @RequestBody NewsRequest newsRequest) {
-        NewsResponse newsResponse = newsRestService.patchById(id, newsRequest);
-        return ResponseEntity.ok(newsResponse);
+    public ResponseEntity<NewsFullResponse> patchById(@PathVariable UUID id, @RequestBody NewsRequest newsRequest) {
+        NewsFullResponse newsFullResponse = newsRestService.patchById(id, newsRequest);
+        return ResponseEntity.ok(newsFullResponse);
     }
 
     @DeleteMapping("/{id}")

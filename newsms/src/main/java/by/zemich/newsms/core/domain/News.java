@@ -2,6 +2,9 @@ package by.zemich.newsms.core.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SourceType;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.time.LocalDateTime;
@@ -19,17 +22,18 @@ public class News {
     @UuidGenerator(style = UuidGenerator.Style.TIME)
     @Setter(AccessLevel.NONE)
     private UUID id;
-    private Author author;
-
+    private UUID authorId;
+    @CreationTimestamp(source = SourceType.DB)
+    private LocalDateTime createdAt;
+    @UpdateTimestamp(source = SourceType.DB)
+    private LocalDateTime updatedAt;
     @OneToMany(
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             mappedBy = "news"
     )
-
     private List<Comment> comments = new ArrayList<>();
-    private LocalDateTime time;
     private String title;
     private String text;
 

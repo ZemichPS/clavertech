@@ -11,6 +11,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -30,6 +31,7 @@ public class CachedCommentCrudServiceImpl implements CommentCrudService {
 
     @Override
     @Cacheable(key = "#id")
+    @Transactional(readOnly = true)
     public Optional<Comment> findById(UUID id) {
         return commentRepository.findById(id);
     }
@@ -42,12 +44,19 @@ public class CachedCommentCrudServiceImpl implements CommentCrudService {
 
     @Override
     @Cacheable(key = "#pageable")
+    @Transactional(readOnly = true)
     public Page<Comment> findAll(Pageable pageable) {
         return commentRepository.findAll(pageable);
     }
 
     @Override
+    public boolean existsById(UUID id) {
+        return commentRepository.existsById(id);
+    }
+
+    @Override
     @Cacheable(key = "#id")
+    @Transactional(readOnly = true)
     public Page<Comment> findAllByNewsId(UUID id, Pageable pageable) {
         return commentRepository.findAllByNewsId(id, pageable);
     }

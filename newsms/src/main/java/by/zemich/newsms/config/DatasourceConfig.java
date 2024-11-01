@@ -15,9 +15,10 @@ public class DatasourceConfig {
     DataSource dataSource(){
         HikariConfig config = new HikariConfig();
         config.setDriverClassName("org.postgresql.Driver");
-        config.setJdbcUrl("jdbc:postgresql://localhost:5432/news");
+        config.setJdbcUrl("jdbc:postgresql://localhost:5432/news_test_db");
         config.setUsername("postgres");
         config.setPassword("postgres");
+        config.setSchema("app");
         return new HikariDataSource(config);
     }
 }
