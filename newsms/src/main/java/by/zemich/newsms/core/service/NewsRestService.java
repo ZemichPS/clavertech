@@ -1,23 +1,24 @@
 package by.zemich.newsms.core.service;
 
-import by.zemich.newsms.api.controller.dto.request.NewsPageRequest;
 import by.zemich.newsms.api.controller.dto.request.NewsRequest;
 import by.zemich.newsms.api.controller.dto.response.CommentFullResponse;
 import by.zemich.newsms.api.controller.dto.response.NewsFullResponse;
 import by.zemich.newsms.api.controller.dto.response.ShortCommentResponse;
 import by.zemich.newsms.core.domain.Comment;
 import by.zemich.newsms.core.domain.News;
+import by.zemich.newsms.core.domain.NewsDoc;
 import by.zemich.newsms.core.mapper.CommentMapper;
+import by.zemich.newsms.core.mapper.FullTextSearchService;
 import by.zemich.newsms.core.mapper.NewsMapper;
 import by.zemich.newsms.core.service.api.CommentCrudService;
 import by.zemich.newsms.core.service.api.NewsCrudService;
 import jakarta.persistence.EntityNotFoundException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -25,6 +26,7 @@ import java.util.UUID;
 public class NewsRestService {
     private final NewsCrudService newsCrudService;
     private final CommentCrudService commentCrudService;
+    private final FullTextSearchService fullTextSearchService;
     private final CommentMapper commentMapper;
     private final NewsMapper newsMapper;
 
@@ -32,12 +34,14 @@ public class NewsRestService {
             @Qualifier("newsCrudServiceDecorator") NewsCrudService newsCrudService,
             CommentCrudService commentCrudService,
             CommentMapper commentMapper,
-            NewsMapper newsMapper
+            NewsMapper newsMapper,
+            FullTextSearchService fullTextSearchService
     ) {
         this.newsCrudService = newsCrudService;
         this.commentCrudService = commentCrudService;
         this.commentMapper = commentMapper;
         this.newsMapper = newsMapper;
+        this.fullTextSearchService = fullTextSearchService;
     }
 
     public News save(NewsRequest newsRequest) {
@@ -110,4 +114,15 @@ public class NewsRestService {
         return new PageImpl<>(fullResponses, pageRequest, newsPage.getTotalElements());
     }
 
+    public Page<NewsFullResponse> fullTextSearch(String text, PageRequest pageRequest) {
+        List<NewsFullResponse> news = fullTextSearchService.findAll(text, pageRequest)
+                .getContent().stream()
+                .map(NewsDoc::getId)
+                .map(newsCrudService::findById)
+                .flatMap(Optional::stream)
+                .map(newsMapper::mapToFullResponse)
+                .toList();
+
+        return new PageImpl<>(news, pageRequest, news.size());
+    }
 }

@@ -2,8 +2,8 @@ package by.zemich.newsms.core.service;
 
 import by.zemich.newsms.api.dao.NewsElasticSearchRepository;
 import by.zemich.newsms.core.domain.NewsDoc;
+import by.zemich.newsms.core.mapper.FullTextSearchService;
 import by.zemich.newsms.core.service.api.ElasticNewsCrudService;
-import by.zemich.newsms.core.service.api.NewsCrudService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.*;
 import org.springframework.data.domain.Page;
@@ -18,7 +18,7 @@ import java.util.UUID;
 @CacheConfig(
         cacheNames = "newsDocs"
 )
-public class CachedElasticSearchServiceImpl implements ElasticNewsCrudService {
+public class CachedElasticTextSearchServiceImpl implements ElasticNewsCrudService, FullTextSearchService {
 
     private final NewsElasticSearchRepository newsElasticSearchRepository;
 
@@ -41,8 +41,8 @@ public class CachedElasticSearchServiceImpl implements ElasticNewsCrudService {
             key = "#pageable.pageNumber + '_' + #pageable.pageSize + '_' + #pageable.sort.toString()"
 
     )
-    public Page<NewsDoc> findAll(Pageable pageable) {
-        return newsElasticSearchRepository.findAll(pageable);
+    public Page<NewsDoc> findAll(String text, Pageable pageable) {
+        return newsElasticSearchRepository.searchByQuery(text, pageable);
     }
 
     @Override
@@ -58,6 +58,11 @@ public class CachedElasticSearchServiceImpl implements ElasticNewsCrudService {
     })
     public void deleteById(UUID id) {
         newsElasticSearchRepository.deleteById(id);
+    }
+
+    @Override
+    public Page<NewsDoc> findAll(Pageable pageable) {
+        return newsElasticSearchRepository.findAll(pageable);
     }
 
 }

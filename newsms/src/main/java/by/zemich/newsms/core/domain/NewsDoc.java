@@ -17,10 +17,6 @@ public class NewsDoc {
     private UUID id;
     @Field(name = "author_id", type = FieldType.Keyword)
     private UUID authorId;
-    @Field(name = "created_at", type = FieldType.Date)
-    private LocalDateTime createdAt;
-    @Field(name = "updated_at", type = FieldType.Date)
-    private LocalDateTime updatedAt;
     @Field(type = FieldType.Text)
     private String title;
     @Field(type = FieldType.Text)

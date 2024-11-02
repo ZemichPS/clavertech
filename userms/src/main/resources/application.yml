@@ -4,6 +4,23 @@ spring:
   profiles:
     active: prod
 
+  datasource:
+    url: ${USERS_DB_URL:jdbc:postgresql://localhost:5433/users}
+    username: ${USERS_DB_USER:postgres}
+    password: ${USERS_DB_PASSWORD:postgres}
+    hikari:
+      schema: app
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    database: postgresql
+    show-sql: false
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+      ddl-auto: none
+    database-platform: org.postgresql.Driver
+
 eureka:
   client:
     healthcheck:

@@ -1,6 +1,18 @@
 version: "3"
 
 services:
+
+  usersdb:
+    container_name: users_db
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=${USERS_DB_PASSWORD}
+    env_file:
+      - .env.production
+
+
   cache:
     container_name: redis-cache
     image: redis:8.0-M02-alpine
@@ -14,3 +26,7 @@ services:
       - "discovery.type=single-node"
     ports:
       - "9200:9200"
+
+
+
+

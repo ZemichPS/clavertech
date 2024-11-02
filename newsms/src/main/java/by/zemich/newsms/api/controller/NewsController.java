@@ -1,6 +1,5 @@
 package by.zemich.newsms.api.controller;
 
-import by.zemich.newsms.api.controller.dto.request.NewsPageRequest;
 import by.zemich.newsms.api.controller.dto.request.NewsRequest;
 import by.zemich.newsms.api.controller.dto.response.CommentFullResponse;
 import by.zemich.newsms.api.controller.dto.response.NewsFullResponse;
@@ -8,6 +7,8 @@ import by.zemich.newsms.api.controller.dto.response.ShortCommentResponse;
 import by.zemich.newsms.core.domain.News;
 import by.zemich.newsms.core.service.NewsRestService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -24,6 +25,7 @@ import java.util.UUID;
 public class NewsController {
 
     private final NewsRestService newsRestService;
+    private final RestTemplateBuilder restTemplateBuilder;
 
     @PostMapping
     public ResponseEntity<URI> create(@RequestBody NewsRequest newsRequest) {
@@ -51,6 +53,19 @@ public class NewsController {
 
         PageImpl<NewsFullResponse> page = newsRestService.getNews(pageRequest);
         return ResponseEntity.ok(page);
+    }
+
+    public ResponseEntity<Page<NewsFullResponse> > search(
+            @RequestParam(name = "page_number", defaultValue = "0") int pageNumber,
+            @RequestParam(name = "page_size", defaultValue = "10") int pageSize,
+            @RequestParam String text
+    ) {
+        PageRequest pageRequest = PageRequest.of(
+                pageNumber,
+                pageSize
+        );
+        Page<NewsFullResponse> response = newsRestService.fullTextSearch(text, pageRequest);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
