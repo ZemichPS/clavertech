@@ -1,4 +1,4 @@
-package by.zemich.newsms.core.service;
+package by.zemich.newsms.core.utils;
 
 import by.zemich.newsms.config.properties.JWTProperty;
 import io.jsonwebtoken.Claims;

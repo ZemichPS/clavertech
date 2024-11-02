@@ -2,8 +2,15 @@ version: "3"
 
 services:
   cache:
-    container_name: "redis-cache"
+    container_name: redis-cache
     image: redis:8.0-M02-alpine
     ports:
       - "6379:6379"
 
+  elastic:
+    container_name: full-text-search-elasticsearch
+    image: elasticsearch:8.15.3
+    environment:
+      - "discovery.type=single-node"
+    ports:
+      - "9200:9200"

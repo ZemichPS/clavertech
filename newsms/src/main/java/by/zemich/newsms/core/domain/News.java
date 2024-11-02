@@ -38,11 +38,8 @@ public class News {
     private String text;
 
     public boolean addComment(Comment comment) {
-        if (!comments.contains(comment)) {
-            comment.setNews(this);
-            return comments.add(comment);
-        }
-        return false;
+        comment.setNews(this);
+        return comments.add(comment);
     }
 
     public void removeComment(Comment comment) {
@@ -53,6 +50,4 @@ public class News {
     public void removeAllComments() {
         this.comments.forEach(comment -> comment.setNews(null));
     }
-
-
 }

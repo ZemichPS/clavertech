@@ -10,17 +10,15 @@ public interface NewsMapper {
 
     News mapToEntity(NewsRequest newsRequest);
 
-    @Mappings({
-            @Mapping(target = "title", source = "title"),
-    })
+//    @Mappings({
+//            @Mapping(target = "title", source = "title"),
+//    })
     void mapToExistingEntity(NewsRequest newsRequest, @MappingTarget News news);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void partialMapToExistingEntity(NewsRequest newsRequest, @MappingTarget News news);
 
-    @Mappings({
-            @Mapping(target = "title", source = "title"),
-    })
+
     NewsFullResponse mapToFullResponse(News news);
 
 }

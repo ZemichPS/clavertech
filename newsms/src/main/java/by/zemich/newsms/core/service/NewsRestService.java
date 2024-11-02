@@ -13,6 +13,7 @@ import by.zemich.newsms.core.service.api.CommentCrudService;
 import by.zemich.newsms.core.service.api.NewsCrudService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
@@ -21,12 +22,23 @@ import java.util.UUID;
 
 
 @Service
-@RequiredArgsConstructor
 public class NewsRestService {
     private final NewsCrudService newsCrudService;
     private final CommentCrudService commentCrudService;
     private final CommentMapper commentMapper;
     private final NewsMapper newsMapper;
+
+    public NewsRestService(
+            @Qualifier("newsCrudServiceDecorator") NewsCrudService newsCrudService,
+            CommentCrudService commentCrudService,
+            CommentMapper commentMapper,
+            NewsMapper newsMapper
+    ) {
+        this.newsCrudService = newsCrudService;
+        this.commentCrudService = commentCrudService;
+        this.commentMapper = commentMapper;
+        this.newsMapper = newsMapper;
+    }
 
     public News save(NewsRequest newsRequest) {
         News news = newsMapper.mapToEntity(newsRequest);
@@ -72,13 +84,12 @@ public class NewsRestService {
     }
 
 
-    public PageImpl<ShortCommentResponse> getCommentsPage(NewsPageRequest pageRequest) {
-        Pageable pageable = formPageable(pageRequest);
-        Page<Comment> allCommentsPage = commentCrudService.findAllByNewsId(pageRequest.getId(), pageable);
+    public PageImpl<ShortCommentResponse> getCommentsPage(UUID newsId, PageRequest pageRequest) {
+        Page<Comment> allCommentsPage = commentCrudService.findAllByNewsId(newsId, pageRequest);
         List<ShortCommentResponse> responses = allCommentsPage.get()
                 .map(commentMapper::mapToDTO)
                 .toList();
-        return new PageImpl<>(responses, pageable, allCommentsPage.getTotalElements());
+        return new PageImpl<>(responses, pageRequest, allCommentsPage.getTotalElements());
     }
 
     public CommentFullResponse getCommentByNewsIdAndCommentId(UUID newsId, UUID commentId) {
@@ -91,21 +102,12 @@ public class NewsRestService {
                 );
     }
 
-    public PageImpl<NewsFullResponse> getNews(NewsPageRequest pageRequest) {
-        Pageable pageable = formPageable(pageRequest);
-        Page<News> newsPage = newsCrudService.findAll(pageable);
+    public PageImpl<NewsFullResponse> getNews(PageRequest pageRequest) {
+        Page<News> newsPage = newsCrudService.findAll(pageRequest);
         final List<NewsFullResponse> fullResponses = newsPage.getContent().stream()
                 .map(newsMapper::mapToFullResponse)
                 .toList();
-        return new PageImpl<>(fullResponses, pageable, newsPage.getTotalElements());
+        return new PageImpl<>(fullResponses, pageRequest, newsPage.getTotalElements());
     }
 
-    private Pageable formPageable(NewsPageRequest pageRequest) {
-        Sort sortBy = Sort.by(Sort.Direction.DESC, pageRequest.getSortBy());
-        return PageRequest.of(
-                pageRequest.getPageNumber(),
-                pageRequest.getPageSize(),
-                sortBy
-        );
-    }
 }

@@ -4,10 +4,7 @@ import by.zemich.newsms.api.dao.NewsRepository;
 import by.zemich.newsms.core.domain.News;
 import by.zemich.newsms.core.service.api.NewsCrudService;
 import lombok.AllArgsConstructor;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -24,7 +21,11 @@ public class CachedNewsCrudServiceImpl implements NewsCrudService {
     private final NewsRepository newsRepository;
 
     @Override
-    @CachePut
+    @CachePut(key = "#news.id")
+    @CacheEvict(
+            value = "newsPages",
+            allEntries = true
+    )
     public News save(News news) {
         return newsRepository.save(news);
     }
@@ -37,19 +38,26 @@ public class CachedNewsCrudServiceImpl implements NewsCrudService {
     }
 
     @Override
-    @CacheEvict
+    @Caching(evict = {
+            @CacheEvict(key = "#id"),
+            @CacheEvict(value = "newsPages", allEntries = true)
+    })
     public void deleteById(UUID id) {
         newsRepository.deleteById(id);
     }
 
     @Override
-    @Cacheable(key = "#pageable")
+    @Cacheable(
+            value = "newsPages",
+            key = "#pageable.pageNumber + '_' + #pageable.pageSize + '_' + #pageable.sort.toString()"
+    )
     @Transactional(readOnly = true)
     public Page<News> findAll(Pageable pageable) {
         return newsRepository.findAll(pageable);
     }
 
     @Override
+    @Cacheable(key = "#id")
     public boolean existsById(UUID id) {
         return newsRepository.existsById(id);
     }

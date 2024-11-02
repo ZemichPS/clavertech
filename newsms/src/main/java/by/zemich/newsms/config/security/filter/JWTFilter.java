@@ -1,6 +1,6 @@
 package by.zemich.newsms.config.security.filter;
 
-import by.zemich.newsms.core.service.JWTHandler;
+import by.zemich.newsms.core.utils.JWTHandler;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

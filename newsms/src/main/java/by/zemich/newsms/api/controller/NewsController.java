@@ -9,6 +9,8 @@ import by.zemich.newsms.core.domain.News;
 import by.zemich.newsms.core.service.NewsRestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -40,11 +42,13 @@ public class NewsController {
             @RequestParam(name = "page_size", defaultValue = "10") int pageSize,
             @RequestParam(name = "sort_by", defaultValue = "createdAt") String sortBy
     ) {
-        NewsPageRequest pageRequest = NewsPageRequest.builder()
-                .pageNumber(pageNumber)
-                .pageSize(pageSize)
-                .sortBy(sortBy)
-                .build();
+
+        PageRequest pageRequest = PageRequest.of(
+                pageNumber,
+                pageSize,
+                Sort.by(Sort.Direction.DESC, sortBy)
+        );
+
         PageImpl<NewsFullResponse> page = newsRestService.getNews(pageRequest);
         return ResponseEntity.ok(page);
     }
@@ -63,13 +67,13 @@ public class NewsController {
             @RequestParam(name = "sort_by", defaultValue = "createdAt") String sortBy
     ) {
 
-        NewsPageRequest pageRequest = NewsPageRequest.builder()
-                .id(id)
-                .pageNumber(pageNumber)
-                .pageSize(pageSize)
-                .sortBy(sortBy)
-                .build();
-        PageImpl<ShortCommentResponse> page = newsRestService.getCommentsPage(pageRequest);
+        PageRequest pageRequest = PageRequest.of(
+                pageNumber,
+                pageSize,
+                Sort.by(Sort.Direction.DESC, sortBy)
+        );
+
+        PageImpl<ShortCommentResponse> page = newsRestService.getCommentsPage(id, pageRequest);
         return ResponseEntity.ok(page);
     }
 

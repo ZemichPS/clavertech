@@ -1,6 +1,7 @@
 package by.zemich.newsms.api.controller;
 
 import by.zemich.newsms.api.controller.dto.request.CommentRequest;
+import by.zemich.newsms.api.controller.dto.response.CommentFullResponse;
 import by.zemich.newsms.core.domain.Comment;
 import by.zemich.newsms.core.service.CommentRestService;
 import lombok.RequiredArgsConstructor;
@@ -31,20 +32,23 @@ public class CommentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Comment> getById(@PathVariable UUID id) {
-        Comment comment = commentRestService.findById(id);
+    public ResponseEntity<CommentFullResponse> getById(@PathVariable UUID id) {
+        CommentFullResponse comment = commentRestService.findById(id);
         return ResponseEntity.ok(comment);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Comment> updateById(@PathVariable UUID id, @RequestBody CommentRequest newCommentRequest) {
-        Comment updatedComment = commentRestService.update(id, newCommentRequest);
+    public ResponseEntity<CommentFullResponse> updateById(@PathVariable UUID id, @RequestBody CommentRequest newCommentRequest) {
+        CommentFullResponse updatedComment = commentRestService.update(id, newCommentRequest);
         return ResponseEntity.ok(updatedComment);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Comment> patchById(@PathVariable UUID id, @RequestBody Map<String, Object> updates) {
-        Comment updatedComment = commentRestService.partialUpdateUpdate(id, updates);
+    public ResponseEntity<CommentFullResponse> patchById(
+            @PathVariable UUID id,
+            @RequestBody CommentRequest commentRequest
+    ) {
+        CommentFullResponse updatedComment = commentRestService.partialUpdateUpdate(id, commentRequest);
         return ResponseEntity.ok(updatedComment);
     }
 

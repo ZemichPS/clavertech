@@ -4,23 +4,20 @@ import by.zemich.newsms.api.controller.dto.request.CommentRequest;
 import by.zemich.newsms.api.controller.dto.response.CommentFullResponse;
 import by.zemich.newsms.api.controller.dto.response.ShortCommentResponse;
 import by.zemich.newsms.core.domain.Comment;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.springframework.web.bind.annotation.Mapping;
+import org.mapstruct.*;
 
 import java.util.Map;
 
 @Mapper(componentModel = "spring")
 public interface CommentMapper {
 
-
+    //@Mapping(source = "text", target = "text")
     Comment mapToEntity(CommentRequest newCommentRequest);
 
-    Comment mapToEntity(Comment newComment, CommentRequest newCommentRequest);
+    void mapToExistingEntity(CommentRequest newCommentRequest, @MappingTarget Comment existingComment);
 
-    Comment mapToExistingEntity(CommentRequest newCommentRequest, @MappingTarget Comment existingComment);
-
-    Comment mapToEntity(Comment newComment, Map<String, Object> updates);
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void partialMapToExistingEntity(CommentRequest newCommentRequest, @MappingTarget Comment existingComment);
 
     ShortCommentResponse mapToDTO(Comment comment);
 
