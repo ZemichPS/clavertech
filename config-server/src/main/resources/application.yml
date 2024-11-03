@@ -1,14 +1,14 @@
 spring:
   application:
-    name: config-server
+    name: configserver
 
   cloud:
     config:
       discovery:
-        service-id: config-server
+        service-id: configserver
       server:
         git:
-          uri: https://github.com/ZemichPS/sadovod-application-config
+          uri: https://github.com/ZemichPS/news-application-config
           skipSslValidation: true
           force-pull: true
           ignore-local-ssh-settings: true
@@ -20,6 +20,9 @@ eureka:
       defaultZone: http://localhost:8761/eureka/
     register-with-eureka: true
     fetch-registry: false
+
+encrypt:
+  key: ${ENCRYPT_KEY:secret}
 
 server:
   port: 8888

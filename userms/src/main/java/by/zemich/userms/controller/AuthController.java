@@ -13,21 +13,9 @@ import java.net.URI;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/auth")
 public class AuthController {
     private final AuthService authService;
-
-    @PostMapping
-    public ResponseEntity<String> register(
-            @RequestBody RegisterRequest request) {
-        User registered = authService.register(request);
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(registered.getId())
-                .toUri();
-        return ResponseEntity.created(location).build();
-    }
 
     @GetMapping
     public ResponseEntity<String> login(@RequestParam String login,

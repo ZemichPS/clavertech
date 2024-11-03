@@ -23,6 +23,6 @@ public class DetailsService implements UserDetailsService {
                         .password(user.getPassword())
                         .roles(user.getRole().name())
                         .build())
-                .orElseThrow(()-> new UsernameNotFoundException("User with username %s".formatted(username)));
+                .orElseThrow(()-> new UsernameNotFoundException("User with email %s".formatted(username)));
     }
 }

@@ -24,13 +24,17 @@ import java.util.Map;
 
 @Configuration
 @EnableWebSecurity
-@Profile("test")
+@Profile("prod")
 public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.authorizeHttpRequests(
-                authorizationManagerRequestMatcherRegistry -> authorizationManagerRequestMatcherRegistry.anyRequest().permitAll()
-        ).build();
+        return http
+                .csrf().disable()
+                .authorizeRequests(
+                        authorizeRequests -> authorizeRequests.anyRequest().permitAll())
+                .formLogin().disable()
+                .httpBasic().disable()
+                .build();
     }
 
     @Bean

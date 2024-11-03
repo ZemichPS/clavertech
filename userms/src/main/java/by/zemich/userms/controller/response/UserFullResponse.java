@@ -1,35 +1,21 @@
-package by.zemich.userms.dao.entity;
+package by.zemich.userms.controller.response;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
+import by.zemich.userms.dao.entity.Role;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SourceType;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.UuidGenerator;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
 
-@Entity(name = "users")
 @Data
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class User {
-    @Id
-    @UuidGenerator(style = UuidGenerator.Style.TIME)
+public class UserFullResponse {
     private UUID id;
-    private String email;
     private String username;
     private String password;
     private String firstName;
@@ -39,5 +25,5 @@ public class User {
     private boolean active;
     @UpdateTimestamp(source = SourceType.DB)
     private LocalDateTime updatedAt;
-    private Role role;
+    private String role;
 }

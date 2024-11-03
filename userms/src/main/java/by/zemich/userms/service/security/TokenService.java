@@ -20,6 +20,7 @@ public class TokenService {
     public String generate(User user) {
         SecretKey signingKey = Keys.hmacShaKeyFor(jwtProperty.getKey().getBytes(StandardCharsets.UTF_8));
 
+
         return Jwts.builder()
                 .subject(user.getUsername())
                 .issuedAt(new Date())

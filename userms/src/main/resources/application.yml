@@ -4,8 +4,18 @@ spring:
   profiles:
     active: prod
 
+  config:
+    import: "configserver:"
+  cloud:
+    config:
+      import-check:
+        enabled: false
+      discovery:
+        enabled: true
+        service-id: configserver
+
   datasource:
-    url: ${USERS_DB_URL:jdbc:postgresql://localhost:5433/users}
+    url: ${USERS_DB_URL:jdbc:postgresql://localhost:5432/users}
     username: ${USERS_DB_USER:postgres}
     password: ${USERS_DB_PASSWORD:postgres}
     hikari:
@@ -19,10 +29,15 @@ spring:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
       ddl-auto: none
-    database-platform: org.postgresql.Driver
 
+#  config:
+#    import: optional:configserver:http://localhost:8888
+
+  liquibase:
+    enabled: false
 eureka:
   client:
+    enabled: true
     healthcheck:
       enabled: true
     serviceUrl:
