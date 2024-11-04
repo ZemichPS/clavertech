@@ -9,7 +9,8 @@ import java.util.UUID;
 public class CommentFullResponse {
     private UUID id;
     private UUID newsId;
+    private String authorId;
+    private String authorUsername;
     private LocalDateTime createdAt;
     private String text;
-    private String username;
 }

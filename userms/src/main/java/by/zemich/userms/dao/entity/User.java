@@ -1,8 +1,6 @@
 package by.zemich.userms.dao.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -39,5 +37,6 @@ public class User {
     private boolean active;
     @UpdateTimestamp(source = SourceType.DB)
     private LocalDateTime updatedAt;
+    @Enumerated(EnumType.STRING)
     private Role role;
 }

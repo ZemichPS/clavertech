@@ -1,15 +1,15 @@
-version: "3"
+version: "3.7"
 
 services:
 
   usersdb:
     container_name: users_db
-    image: postgres
+    image: postgres:latest
     restart: always
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_PASSWORD=${USERS_DB_PASSWORD}
+      - POSTGRES_PASSWORD=postgres
     env_file:
       - .env.production
 
@@ -21,11 +21,20 @@ services:
 
   elastic:
     container_name: full-text-search-elasticsearch
-    image: elasticsearch:8.15.3
+    image: elasticsearch:7.17.25
     environment:
-      - "discovery.type=single-node"
+      - discovery.type=single-node
+      - xpack.security.enabled=true  # Включаем безопасность
+      - ELASTIC_PASSWORD=elastic  # Пароль для пользователя "elastic"
+      - ELASTIC_USERNAME=elastic
+
     ports:
       - "9200:9200"
+      - "9300:9300"
+
+networks:
+  infrastructure:
+    driver: bridge
 
 
 

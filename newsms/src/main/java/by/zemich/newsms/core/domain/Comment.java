@@ -17,6 +17,8 @@ public class Comment {
     @Id
     @UuidGenerator(style = UuidGenerator.Style.TIME)
     private UUID id;
+    @Embedded
+    private Author author;
     @CreationTimestamp()
     private LocalDateTime createdAt;
     @UpdateTimestamp
@@ -25,5 +27,5 @@ public class Comment {
     @JoinColumn(name = "news_id", referencedColumnName = "id")
     private News news;
     private String text;
-    private String username;
+
 }

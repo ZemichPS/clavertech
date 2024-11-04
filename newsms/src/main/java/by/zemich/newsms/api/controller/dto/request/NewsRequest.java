@@ -15,6 +15,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class NewsRequest {
     private UUID authorId;
+    private String authorUsername;
     private String title;
     private String text;
 }

@@ -8,8 +8,8 @@ spring:
     import: "configserver:"
   cloud:
     config:
-      import-check:
-        enabled: false
+      #import-check:
+        #enabled: false
       discovery:
         enabled: true
         service-id: configserver
@@ -46,4 +46,4 @@ eureka:
       fetch-registry: true
 
 server:
-  port: 0
+  port: 58231

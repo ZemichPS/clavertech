@@ -1,12 +1,13 @@
 package by.zemich.userms;
 
-import by.zemich.userms.config.JWTProperty;
+import by.zemich.userms.config.properties.JWTProperty;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @SpringBootApplication
-
+@EnableDiscoveryClient
 @EnableConfigurationProperties({JWTProperty.class})
 public class UsermsApplication {
 

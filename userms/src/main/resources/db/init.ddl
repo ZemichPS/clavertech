@@ -5,7 +5,7 @@ CREATE SCHEMA app;
 CREATE TABLE app.users
 (
     id          UUID,
-    username    VARCHAR(100),
+    author_username    VARCHAR(100),
     email       VARCHAR(50),
     role        VARCHAR(10),
     active      BOOLEAN,
@@ -15,5 +15,5 @@ CREATE TABLE app.users
     register_at DATE,
     updated_at  DATE,
     CONSTRAINT pr_id PRIMARY KEY (id),
-    CONSTRAINT username_uniq UNIQUE (username)
+    CONSTRAINT username_uniq UNIQUE (author_username)
 )

@@ -1,4 +1,4 @@
-package by.zemich.userms.config;
+package by.zemich.userms.config.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

@@ -22,7 +22,8 @@ public class News {
     @UuidGenerator(style = UuidGenerator.Style.TIME)
     @Setter(AccessLevel.NONE)
     private UUID id;
-    private UUID authorId;
+    @Embedded
+    private Author author;
     @CreationTimestamp(source = SourceType.DB)
     private LocalDateTime createdAt;
     @UpdateTimestamp(source = SourceType.DB)

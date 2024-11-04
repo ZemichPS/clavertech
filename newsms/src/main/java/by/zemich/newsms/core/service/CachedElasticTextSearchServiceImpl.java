@@ -2,8 +2,8 @@ package by.zemich.newsms.core.service;
 
 import by.zemich.newsms.api.dao.NewsElasticSearchRepository;
 import by.zemich.newsms.core.domain.NewsDoc;
-import by.zemich.newsms.core.mapper.FullTextSearchService;
 import by.zemich.newsms.core.service.api.ElasticNewsCrudService;
+import by.zemich.newsms.core.service.api.FullTextSearchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.*;
 import org.springframework.data.domain.Page;

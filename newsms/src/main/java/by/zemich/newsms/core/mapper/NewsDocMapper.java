@@ -9,6 +9,7 @@ import org.mapstruct.MappingTarget;
 public interface NewsDocMapper {
 
     NewsDoc mapEntityToDoc(News news);
+
     void mapEntityToExistingDoc(News news, @MappingTarget NewsDoc newsDoc);
 
 }

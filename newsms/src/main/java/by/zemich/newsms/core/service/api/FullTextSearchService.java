@@ -1,4 +1,4 @@
-package by.zemich.newsms.core.mapper;
+package by.zemich.newsms.core.service.api;
 
 import by.zemich.newsms.core.domain.NewsDoc;
 import org.springframework.data.domain.Page;

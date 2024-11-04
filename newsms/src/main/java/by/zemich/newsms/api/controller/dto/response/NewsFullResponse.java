@@ -9,6 +9,7 @@ import java.util.UUID;
 public class NewsFullResponse {
     private UUID id;
     private UUID authorId;
+    private String authorUsername;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private String title;
