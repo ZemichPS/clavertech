@@ -1,6 +1,7 @@
 package by.zemich.userms.controller;
 
 import by.zemich.userms.controller.request.AuthLoginPasswordRequest;
+import by.zemich.userms.controller.request.ChangePasswordRequest;
 import by.zemich.userms.controller.request.RegisterRequest;
 import by.zemich.userms.dao.entity.User;
 import by.zemich.userms.service.AuthService;
@@ -25,6 +26,17 @@ public class AuthController {
         return ResponseEntity.ok(jwt);
     }
 
+    @PatchMapping
+    public ResponseEntity<String> changePassword(
+            @RequestBody ChangePasswordRequest request
+    ) {
+        String jwt = authService.changePassword(
+                request.getLogin(),
+                request.getOldPassword(),
+                request.getNewPassword()
+        );
+        return ResponseEntity.ok(jwt);
+    }
 
 
 }

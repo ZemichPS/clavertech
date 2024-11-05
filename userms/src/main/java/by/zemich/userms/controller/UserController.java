@@ -1,17 +1,16 @@
 package by.zemich.userms.controller;
 
 import by.zemich.userms.controller.request.RegisterRequest;
+import by.zemich.userms.controller.request.UpdateUserRequest;
 import by.zemich.userms.controller.response.UserFullResponse;
 import by.zemich.userms.dao.entity.User;
-import by.zemich.userms.service.UserService;
-import jakarta.validation.Valid;
+import by.zemich.userms.service.UserRestService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -23,12 +22,12 @@ import java.util.UUID;
 @AllArgsConstructor
 public class UserController {
 
-    private final UserService userService;
+    private final UserRestService userRestService;
 
     @PostMapping
     public ResponseEntity<String> register(
             @RequestBody RegisterRequest request) {
-        User registered = userService.register(request);
+        User registered = userRestService.register(request);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
@@ -44,19 +43,33 @@ public class UserController {
             @RequestParam(name = "sort_by", defaultValue = "registerAt") String sortBy
     ) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy).descending());
-        Page<UserFullResponse> response = userService.findAll(pageable);
+        Page<UserFullResponse> response = userRestService.findAll(pageable);
         return ResponseEntity.ok(response);
     }
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<UserFullResponse> deactivate(@PathVariable UUID id) {
-        UserFullResponse response = userService.deactivate(id);
+    @PatchMapping("/{userId}")
+    public ResponseEntity<UserFullResponse> partialUpdate(
+            @PathVariable UUID userId,
+            @RequestBody UpdateUserRequest updateUserRequest) {
+        UserFullResponse userUpdated = userRestService.partialUpdate(userId, updateUserRequest);
+        return ResponseEntity.ok(userUpdated);
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<UserFullResponse> findById(@PathVariable UUID userId) {
+        UserFullResponse response = userRestService.findById(userId);
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UserFullResponse> findById(@PathVariable UUID id) {
-        UserFullResponse response = userService.findById(id);
+    @PatchMapping("/{userId}/deactivation")
+    public ResponseEntity<UserFullResponse> deactivate(@PathVariable UUID userId) {
+        UserFullResponse response = userRestService.deactivate(userId);
+        return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping("/{userId}/activation")
+    public ResponseEntity<UserFullResponse> activate(@PathVariable UUID userId) {
+        UserFullResponse response = userRestService.activate(userId);
         return ResponseEntity.ok(response);
     }
 }

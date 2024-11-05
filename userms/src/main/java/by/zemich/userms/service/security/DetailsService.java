@@ -1,7 +1,7 @@
 
 package by.zemich.userms.service.security;
 
-import by.zemich.userms.service.UserService;
+import by.zemich.userms.dao.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,11 +13,11 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class DetailsService implements UserDetailsService {
 
-    private final UserService userService;
+    private final UserRepository repository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userService.findByUsername(username)
+        return repository.findByUsername(username)
                 .map(user-> User.builder()
                         .username(user.getUsername())
                         .password(user.getPassword())

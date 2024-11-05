@@ -25,7 +25,6 @@ import java.util.UUID;
 public class NewsController {
 
     private final NewsRestService newsRestService;
-    private final RestTemplateBuilder restTemplateBuilder;
 
     @PostMapping
     public ResponseEntity<URI> create(@RequestBody NewsRequest newsRequest) {
@@ -55,11 +54,13 @@ public class NewsController {
         return ResponseEntity.ok(page);
     }
 
+    @GetMapping("/full")
     public ResponseEntity<Page<NewsFullResponse> > search(
             @RequestParam(name = "page_number", defaultValue = "0") int pageNumber,
             @RequestParam(name = "page_size", defaultValue = "10") int pageSize,
             @RequestParam String text
     ) {
+        System.out.println("try -                --- - - - -- - --------- - - - -- - - - -- -- - -- ");
         PageRequest pageRequest = PageRequest.of(
                 pageNumber,
                 pageSize

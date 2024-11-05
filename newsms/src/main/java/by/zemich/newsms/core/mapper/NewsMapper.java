@@ -11,23 +11,28 @@ import java.util.UUID;
 @Mapper(componentModel = "spring")
 public interface NewsMapper {
 
-    @Mapping(target = "author", qualifiedByName = "mapAuthor")
+    @Mapping(target = "author", source = ".", qualifiedByName = "mapAuthor")
     News mapToEntity(NewsRequest newsRequest);
 
+    @Mapping(target = "author", source = ".", qualifiedByName = "mapAuthor")
     void mapToExistingEntity(NewsRequest newsRequest, @MappingTarget News news);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-
+    @Mapping(target = "author", source = ".", qualifiedByName = "mapAuthor")
     void partialMapToExistingEntity(NewsRequest newsRequest, @MappingTarget News news);
 
+    @Mapping(source = "author.id", target = "authorId")
+    @Mapping(source = "author.username", target = "authorUsername")
     NewsFullResponse mapToFullResponse(News news);
 
     @Named("mapAuthor")
     default Author mapAuthor(NewsRequest newsRequest) {
         Author author = new Author();
-        author.setUsername(newsRequest.getAuthorUsername());
         author.setId(newsRequest.getAuthorId());
+        author.setUsername(newsRequest.getAuthorUsername());
         return author;
     }
+
+
 
 }

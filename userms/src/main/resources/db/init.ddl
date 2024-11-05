@@ -15,5 +15,6 @@ CREATE TABLE app.users
     register_at DATE,
     updated_at  DATE,
     CONSTRAINT pr_id PRIMARY KEY (id),
-    CONSTRAINT username_uniq UNIQUE (author_username)
+    CONSTRAINT username_uniq UNIQUE (author_username),
+    CONSTRAINT email UNIQUE (email)
 )

@@ -17,7 +17,6 @@ import java.util.UUID;
 public class UserFullResponse {
     private UUID id;
     private String username;
-    private String password;
     private String firstName;
     private String lastName;
     @CreationTimestamp(source = SourceType.DB)

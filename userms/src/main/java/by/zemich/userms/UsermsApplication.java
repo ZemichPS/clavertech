@@ -1,6 +1,6 @@
 package by.zemich.userms;
 
-import by.zemich.userms.config.properties.JWTProperty;
+import by.zemich.userms.security.properties.JWTProperty;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

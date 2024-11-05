@@ -8,6 +8,7 @@ import java.util.UUID;
 @Data
 public class CommentRequest {
     private UUID newsId;
+    private UUID userId;
     private String username;
     private String text;
 }

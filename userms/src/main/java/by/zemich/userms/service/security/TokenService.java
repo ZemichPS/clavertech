@@ -1,6 +1,6 @@
 package by.zemich.userms.service.security;
 
-import by.zemich.userms.config.properties.JWTProperty;
+import by.zemich.userms.security.properties.JWTProperty;
 import by.zemich.userms.dao.entity.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
