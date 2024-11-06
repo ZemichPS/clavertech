@@ -30,9 +30,6 @@ spring:
         physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
       ddl-auto: none
 
-#  config:
-#    import: optional:configserver:http://localhost:8888
-
   liquibase:
     enabled: false
 eureka:

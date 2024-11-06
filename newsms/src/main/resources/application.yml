@@ -8,13 +8,15 @@ spring:
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
 
+  config:
+    import: "configserver:"
   cloud:
     config:
-      discovery:
-        enabled: true
-        service-id: config-server
       import-check:
         enabled: false
+      discovery:
+        enabled: true
+        service-id: configserver
 
   liquibase:
     enabled: false
