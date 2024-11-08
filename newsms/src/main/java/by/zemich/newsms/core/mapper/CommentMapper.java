@@ -27,6 +27,9 @@ public interface CommentMapper {
     @Mapping(source = "author.username", target = "authorUsername")
     ShortCommentResponse mapToDTO(Comment comment);
 
+
+    @Mapping(source = "author.id", target = "authorId")
+    @Mapping(source = "author.username", target = "authorUsername")
     CommentFullResponse mapToFullResponse(Comment comment);
 
     @Named("toAuthor")

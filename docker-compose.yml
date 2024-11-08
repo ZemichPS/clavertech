@@ -13,6 +13,18 @@ services:
     env_file:
       - .env.production
 
+  newsdb:
+    container_name: news_db
+    image: postgres:latest
+    restart: always
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    env_file:
+      - .env.production
+
+
   cache:
     container_name: redis-cache
     image: redis:8.0-M02-alpine
@@ -24,17 +36,17 @@ services:
     image: elasticsearch:7.17.25
     environment:
       - discovery.type=single-node
-      - xpack.security.enabled=true  # Включаем безопасность
-      - ELASTIC_PASSWORD=elastic  # Пароль для пользователя "elastic"
+      - xpack.security.enabled=true
+      - ELASTIC_PASSWORD=elastic
       - ELASTIC_USERNAME=elastic
 
     ports:
       - "9200:9200"
       - "9300:9300"
 
-networks:
-  infrastructure:
-    driver: bridge
+#networks:
+#  news-system:
+#    driver: bridge
 
 
 

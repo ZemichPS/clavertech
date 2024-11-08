@@ -1,4 +1,4 @@
-package by.zemich.userms.security.filter;
+package by.zemich.userms.security.filters;
 
 import by.zemich.userms.security.utils.JWTHandler;
 import jakarta.servlet.FilterChain;
@@ -8,13 +8,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
 
 @RequiredArgsConstructor
@@ -45,7 +45,16 @@ public class JWTFilter extends OncePerRequestFilter {
         }
 
         final String userName = jwtHandler.getUserName(token);
-        UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
+
+        UserDetails userDetails = null;
+
+        if (userName.equals("SYSTEM")) {
+            userDetails = User.builder().username(userName)
+                    .roles("SYSTEM")
+                    .username(jwtHandler.getUserName(token))
+                    .password("SYSTEM")
+                    .build();
+        } else userDetails = userDetailsService.loadUserByUsername(userName);
 
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                 userDetails,

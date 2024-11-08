@@ -1,6 +1,7 @@
 spring:
   application:
     name: news-ms
+
   profiles:
     active: test
 
@@ -27,6 +28,7 @@ spring:
         physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
     show-sql: true
 
+
 eureka:
   client:
     enabled: true
@@ -43,5 +45,19 @@ cache:
 server:
   port: 64102
 
-jwt:
-  secret: dfiogudoifguoidfgiodufgiodufgiodufgiod
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+  show-actuator: false
+  api-docs:
+    enabled: true
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: openapi, swagger-ui
+

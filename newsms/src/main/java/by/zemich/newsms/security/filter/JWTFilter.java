@@ -1,6 +1,6 @@
-package by.zemich.newsms.config.security.filter;
+package by.zemich.newsms.security.filter;
 
-import by.zemich.newsms.core.utils.JWTHandler;
+import by.zemich.newsms.security.utils.JWTHandler;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,12 +11,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
 
+@Component
 @RequiredArgsConstructor
 public class JWTFilter extends OncePerRequestFilter {
 
@@ -44,10 +45,17 @@ public class JWTFilter extends OncePerRequestFilter {
             return;
         }
 
-        final String userName = jwtHandler.getUserName(token);
-        UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
 
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, List.of());
+        final String userId = jwtHandler.getUserId(token);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
+
+
+
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                userDetails,
+                null,
+                userDetails.getAuthorities()
+        );
 
         authentication.setDetails(
                 new WebAuthenticationDetailsSource().buildDetails(request)

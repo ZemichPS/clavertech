@@ -6,6 +6,9 @@ import by.zemich.newsms.api.controller.dto.response.NewsFullResponse;
 import by.zemich.newsms.api.controller.dto.response.ShortCommentResponse;
 import by.zemich.newsms.core.domain.News;
 import by.zemich.newsms.core.service.NewsRestService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.data.domain.Page;
@@ -22,12 +25,18 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/news")
 @RequiredArgsConstructor
-public class NewsController {
+@Tag(
+        name = "News management endpoints"
+)
+public class NewsController extends BaseController{
 
     private final NewsRestService newsRestService;
 
+    @Operation(
+            description = "add new news"
+    )
     @PostMapping
-    public ResponseEntity<URI> create(@RequestBody NewsRequest newsRequest) {
+    public ResponseEntity<URI> create(@RequestBody @Valid NewsRequest newsRequest) {
         News savedNews = newsRestService.save(newsRequest);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -37,6 +46,9 @@ public class NewsController {
         return ResponseEntity.created(location).build();
     }
 
+    @Operation(
+            description = "get page news"
+    )
     @GetMapping
     public ResponseEntity<PageImpl<NewsFullResponse>> getNews(
             @RequestParam(name = "page_number", defaultValue = "0") int pageNumber,
@@ -54,13 +66,15 @@ public class NewsController {
         return ResponseEntity.ok(page);
     }
 
+    @Operation(
+            description = "full text search"
+    )
     @GetMapping("/full")
-    public ResponseEntity<Page<NewsFullResponse> > search(
+    public ResponseEntity<Page<NewsFullResponse>> search(
             @RequestParam(name = "page_number", defaultValue = "0") int pageNumber,
             @RequestParam(name = "page_size", defaultValue = "10") int pageSize,
             @RequestParam String text
     ) {
-        System.out.println("try -                --- - - - -- - --------- - - - -- - - - -- -- - -- ");
         PageRequest pageRequest = PageRequest.of(
                 pageNumber,
                 pageSize
@@ -69,12 +83,18 @@ public class NewsController {
         return ResponseEntity.ok(response);
     }
 
+    @Operation(
+            description = "get news by id"
+    )
     @GetMapping("/{id}")
     public ResponseEntity<NewsFullResponse> getById(@PathVariable UUID id) {
         NewsFullResponse newsFullResponse = newsRestService.findById(id);
         return ResponseEntity.ok(newsFullResponse);
     }
 
+    @Operation(
+            description = "get comments page by news id"
+    )
     @GetMapping("/{id}/comments")
     public ResponseEntity<PageImpl<ShortCommentResponse>> getNews(
             @PathVariable UUID id,
@@ -93,6 +113,9 @@ public class NewsController {
         return ResponseEntity.ok(page);
     }
 
+    @Operation(
+            description = "get comment by id and news id"
+    )
     @GetMapping("/{news_id}/comments/{comment_id}")
     public ResponseEntity<CommentFullResponse> getCommentByNewsId(
             @PathVariable(name = "news_id") UUID newsId,
@@ -102,18 +125,33 @@ public class NewsController {
         return ResponseEntity.ok(response);
     }
 
+    @Operation(
+            description = "update news by id"
+    )
     @PutMapping("/{id}")
-    public ResponseEntity<NewsFullResponse> updateById(@PathVariable UUID id, @RequestBody NewsRequest newsRequest) {
+    public ResponseEntity<NewsFullResponse> updateById(
+            @PathVariable UUID id,
+            @RequestBody @Valid NewsRequest newsRequest
+    ) {
         NewsFullResponse newsFullResponse = newsRestService.update(id, newsRequest);
         return ResponseEntity.ok(newsFullResponse);
     }
 
+    @Operation(
+            description = "partial update news by id"
+    )
     @PatchMapping("/{id}")
-    public ResponseEntity<NewsFullResponse> patchById(@PathVariable UUID id, @RequestBody NewsRequest newsRequest) {
+    public ResponseEntity<NewsFullResponse> patchById(
+            @PathVariable UUID id,
+            @RequestBody @Valid NewsRequest newsRequest
+    ) {
         NewsFullResponse newsFullResponse = newsRestService.patchById(id, newsRequest);
         return ResponseEntity.ok(newsFullResponse);
     }
 
+    @Operation(
+            description = "delete news by id"
+    )
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable UUID id) {
         newsRestService.deleteById(id);

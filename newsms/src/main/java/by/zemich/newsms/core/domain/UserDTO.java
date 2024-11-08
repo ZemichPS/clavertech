@@ -13,6 +13,6 @@ public class UserDTO {
 }
 
 enum Role {
-    ADMIN, JOURNALIST, SUBSCRIBER, USER;
+    ADMIN, JOURNALIST, SUBSCRIBER;
 }
 
