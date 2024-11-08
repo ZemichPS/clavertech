@@ -60,7 +60,6 @@ public class NewsController {
             @RequestParam(name = "page_size", defaultValue = "10") int pageSize,
             @RequestParam String text
     ) {
-        System.out.println("try -                --- - - - -- - --------- - - - -- - - - -- -- - -- ");
         PageRequest pageRequest = PageRequest.of(
                 pageNumber,
                 pageSize

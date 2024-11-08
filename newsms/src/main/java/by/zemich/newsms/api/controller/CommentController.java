@@ -25,36 +25,36 @@ public class CommentController {
         Comment savedComment = commentRestService.save(newCommentRequest);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("/{id}")
+                .path("/{commentId}")
                 .buildAndExpand(savedComment.getId())
                 .toUri();
         return ResponseEntity.created(location).build();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<CommentFullResponse> getById(@PathVariable UUID id) {
-        CommentFullResponse comment = commentRestService.findById(id);
+    @GetMapping("/{commentId}")
+    public ResponseEntity<CommentFullResponse> getById(@PathVariable UUID commentId) {
+        CommentFullResponse comment = commentRestService.findById(commentId);
         return ResponseEntity.ok(comment);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<CommentFullResponse> updateById(@PathVariable UUID id, @RequestBody CommentRequest newCommentRequest) {
-        CommentFullResponse updatedComment = commentRestService.update(id, newCommentRequest);
+    @PutMapping("/{commentId}")
+    public ResponseEntity<CommentFullResponse> updateById(@PathVariable UUID commentId, @RequestBody CommentRequest newCommentRequest) {
+        CommentFullResponse updatedComment = commentRestService.update(commentId, newCommentRequest);
         return ResponseEntity.ok(updatedComment);
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/{commentId}")
     public ResponseEntity<CommentFullResponse> patchById(
-            @PathVariable UUID id,
+            @PathVariable UUID commentId,
             @RequestBody CommentRequest commentRequest
     ) {
-        CommentFullResponse updatedComment = commentRestService.partialUpdateUpdate(id, commentRequest);
+        CommentFullResponse updatedComment = commentRestService.partialUpdateUpdate(commentId, commentRequest);
         return ResponseEntity.ok(updatedComment);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable UUID id) {
-        commentRestService.delete(id);
+    @DeleteMapping("/{commentId}")
+    public ResponseEntity<Void> deleteById(@PathVariable UUID commentId) {
+        commentRestService.delete(commentId);
         return ResponseEntity.noContent().build();
     }
 

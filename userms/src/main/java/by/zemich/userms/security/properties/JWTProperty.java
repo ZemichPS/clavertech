@@ -7,6 +7,5 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Data
 public class JWTProperty {
     private String key;
-    private String issuer;
     private int duration;
 }

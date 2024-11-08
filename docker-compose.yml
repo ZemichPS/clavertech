@@ -13,6 +13,18 @@ services:
     env_file:
       - .env.production
 
+  newsdb:
+    container_name: news_db
+    image: postgres:latest
+    restart: always
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    env_file:
+      - .env.production
+
+
   cache:
     container_name: redis-cache
     image: redis:8.0-M02-alpine
@@ -33,7 +45,7 @@ services:
       - "9300:9300"
 
 networks:
-  infrastructure:
+  news-system:
     driver: bridge
 
 

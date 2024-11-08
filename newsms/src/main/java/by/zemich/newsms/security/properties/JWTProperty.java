@@ -1,11 +1,11 @@
-package by.zemich.newsms.config.properties;
+package by.zemich.newsms.security.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
 @ConfigurationProperties(prefix = "jwt")
 @Data
 public class JWTProperty {
-    private String secret;
+    private String key;
+    private int duration;
 }
