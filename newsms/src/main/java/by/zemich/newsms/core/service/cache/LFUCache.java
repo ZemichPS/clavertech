@@ -1,4 +1,4 @@
-package by.zemich.newsms.config.cache;
+package by.zemich.newsms.core.service.cache;
 
 import java.util.HashMap;
 import java.util.LinkedHashSet;

@@ -1,9 +1,8 @@
 package by.zemich.newsms;
 
-import by.zemich.newsms.config.properties.CacheProperties;
+import by.zemich.newsms.properties.CacheProperties;
 import by.zemich.newsms.security.properties.JWTProperty;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;

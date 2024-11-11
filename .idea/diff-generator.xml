@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DiffGenerationConfig">
+    <option name="snapshotDb" value="false" />
+    <option name="snapshotModelValue" value="newsms.main:newsms.main" />
+    <option name="sourceModelValue" value="newsms.main:newsms.main" />
+    <option name="targetDbValue" value="e348163a-4343-436f-a5b5-4d6a8046e74e" />
+  </component>
+</project>

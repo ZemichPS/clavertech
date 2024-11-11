@@ -41,7 +41,7 @@ public class RedisCacheConfig {
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()))
                 .disableCachingNullValues()
                 .computePrefixWith(cacheName -> "myApp::" + cacheName + "::")
-                .disableKeyPrefix(); // Adjust based on the requirement
+                .disableKeyPrefix();
     }
 
 }

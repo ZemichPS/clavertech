@@ -1,8 +1,8 @@
 package by.zemich.newsms.config;
 
-import by.zemich.newsms.config.cache.LFUCacheManager;
-import by.zemich.newsms.config.cache.LRUCacheManager;
-import by.zemich.newsms.config.properties.CacheProperties;
+import by.zemich.newsms.core.service.cache.LFUCacheManager;
+import by.zemich.newsms.core.service.cache.LRUCacheManager;
+import by.zemich.newsms.properties.CacheProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cache.CacheManager;

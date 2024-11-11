@@ -1,20 +1,21 @@
-package by.zemich.newsms.config.cache;
+package by.zemich.newsms.core.service.cache;
 
 import org.springframework.cache.Cache;
+import org.springframework.cache.support.SimpleValueWrapper;
 
 import java.util.concurrent.Callable;
 
-public class LruCacheWrapper<K, V> implements Cache {
+public class LFUCacheWrapper<K, V> implements Cache {
 
-    private final LRUCache<K, V> cache;
+    private final LFUCache<K, V> cache;
 
-    public LruCacheWrapper(LRUCache<K, V> cache) {
+    public LFUCacheWrapper(LFUCache<K, V> cache) {
         this.cache = cache;
     }
 
     @Override
     public String getName() {
-        return "LRU Cache";
+        return "LFU cache";
     }
 
     @Override
@@ -23,29 +24,27 @@ public class LruCacheWrapper<K, V> implements Cache {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public ValueWrapper get(Object key) {
-        V value = cache.get(key);
-        return (value != null ? () -> value : null);
+        V value = cache.get((K)key);
+        return (value != null) ? new SimpleValueWrapper(value) : null;
     }
 
     @Override
     public <T> T get(Object key, Class<T> type) {
-        V value = cache.get(key);
-        if (value != null && type.isInstance(value)) {
-            return (T) value;
-        }
-        return null;
+        V value = cache.get((K) key);
+        return (value != null && type != null && type.isInstance(value)) ? (T) value : null;
     }
 
     @Override
     public <T> T get(Object key, Callable<T> valueLoader) {
-        V value = cache.get(key);
+        V value = cache.get((K) key);
         if (value != null) {
             return (T) value;
         }
         try {
             T loadedValue = valueLoader.call();
-            cache.put((K) key, (V) loadedValue);
+            put(key, loadedValue);
             return loadedValue;
         } catch (Exception e) {
             throw new RuntimeException("Error loading value for key: " + key, e);
@@ -59,7 +58,7 @@ public class LruCacheWrapper<K, V> implements Cache {
 
     @Override
     public void evict(Object key) {
-        cache.remove(key);
+        cache.remove((K) key);
     }
 
     @Override

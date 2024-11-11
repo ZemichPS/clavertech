@@ -15,7 +15,7 @@ public class DatasourceProdConfig {
     DataSource dataSource(){
         HikariConfig config = new HikariConfig();
         config.setDriverClassName("org.postgresql.Driver");
-        config.setJdbcUrl("jdbc:postgresql://news-db:5432/news_test_db");
+        config.setJdbcUrl("jdbc:postgresql://news-db:5433/news");
         config.setUsername("postgres");
         config.setPassword("postgres");
         config.setSchema("app");

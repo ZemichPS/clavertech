@@ -18,7 +18,7 @@ import java.net.URI;
 public class AuthController {
     private final AuthService authService;
 
-    @GetMapping
+    @GetMapping("/login")
     public ResponseEntity<String> login(@RequestParam String login,
                                         @RequestParam String password
     ) {

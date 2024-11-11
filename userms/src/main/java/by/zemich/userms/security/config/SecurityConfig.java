@@ -43,7 +43,7 @@ public class SecurityConfig {
                         .requestMatchers(antMatcher(HttpMethod.GET, "/api/v1/users/{userId}"))
                         .access(userAdminOrAddressOwnerAuthorizationManager)
                         .requestMatchers(antMatcher(HttpMethod.POST)).permitAll()
-                        .requestMatchers(antMatcher(HttpMethod.GET, "/api/v1/auth")).permitAll())
+                        .requestMatchers(antMatcher(HttpMethod.GET, "/api/v1/auth/login")).permitAll())
                 .csrf().disable()
                 .formLogin().disable()
                 .httpBasic().disable()
